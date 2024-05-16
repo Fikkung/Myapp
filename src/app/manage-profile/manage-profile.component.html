@@ -1,0 +1,108 @@
+<h1>
+    Manage Profile
+</h1>
+<form (ngSubmit)="onSubmit()" [formGroup]="myForm">
+    <div class="row">
+        <div class="12">
+            <label for="prefix" class="form-label">Prefix</label>
+            <select class="form-select" id="prefix" formControlName="prefix" [ngClass]="{ 'is-invalid': submitted && f['prefix'].errors }">
+                <option value="null" selected>Open this select menu</option>
+                @for(prefix of prefixs; track prefix.value){
+                    <option [value]="prefix.value">{{prefix.text}}</option>
+                }
+                
+              </select>
+              <div class="invalid-feedback">
+                Please Enter Choose Your Prefix
+            </div>
+        </div>
+        <div class="col-6">
+            <div>
+                <label for="fname" class="form-label">Your First Name</label>
+                <input type="text" class="form-control" 
+                    formControlName="fname" id="fname" 
+                    placeholder="First Name"
+                    [ngClass]="{ 'is-invalid': submitted && f['fname'].errors }">
+                    @if (f['fname'].errors) {
+                        <div class="invalid-feedback">
+                            @if (f['fname'].errors['required']) {
+                                Please Enter Your First Name
+                            }
+                            @if (f['fname'].errors['maxlength']) {
+                                Your First Name must not exceed 10 characters
+                            }
+                        </div>
+                    }
+                
+            </div>
+        </div>
+        <div class="col-6">
+            <div>
+                <label for="lname" class="form-label">Your Last Name</label>
+                <input type="text" class="form-control" 
+                    formControlName="lname" id="lname" 
+                    placeholder="Last Name"
+                    [ngClass]="{ 'is-invalid': submitted && f['lname'].errors }">
+                    @if (f['lname'].errors) {
+                        <div class="invalid-feedback">
+                            @if (f['lname'].errors['required']) {
+                                Please Enter Your Last Name
+                            }
+                            @if (f['lname'].errors['maxlength']) {
+                                Your Last Name must not exceed 10 characters
+                            }
+                        </div>
+                    }
+            </div>
+        </div>    
+        <div class="col-6">
+            <div>
+                <label for="age" class="form-label">Your Age</label>
+                <input type="number" class="form-control" 
+                    formControlName="age" id="age" 
+                    placeholder="Age"
+                    [ngClass]="{ 'is-invalid': submitted && f['age'].errors }">
+                <div class="invalid-feedback">
+                    Please Enter Your Age
+                </div>
+            </div>      
+        </div>    
+    </div>    
+    <div class="col-12">
+        
+        <ng-container formArrayName="educations">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Level</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (education of educations.controls; track education; let i = $index) {
+                        <tr class="education-form-row" [formGroupName]="i">
+                            <td>
+                                <input type="text" class="form-control" formControlName="year" placeholder="education year">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" formControlName="level" placeholder="education level">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" formControlName="location" placeholder="education location">
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" (click)="removeEducation(i)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            
+
+        </ng-container>
+        <button type="button" class="btn btn-primary mt-2" (click)="addEducation()">Add Education</button>
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Submit</button>
+    <button type="reset" class="btn btn-dark mt-2" (click)="onReset()">Reset</button>
+</form>
